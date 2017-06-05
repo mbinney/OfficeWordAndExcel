@@ -48,6 +48,7 @@ namespace Office
 
             objWB.Close(true, filename, misValue);
             //objWB.Close(0); -- no save changes.
+            
 
             //http://stackoverflow.com/questions/8977571/excel-process-remains-open-after-interop-traditional-method-not-working
             //These will close the excel object and force garbage collection.  Watch Task manager. Keep on eye on the Excel process.
@@ -58,41 +59,81 @@ namespace Office
             objWB = null; //set each memory reference to null.
             objWS = null;
             objApp = null;
-            GC.Collect();
-
-
-            
+            GC.Collect();                       
 
         }
 
-        public void build_word_doc() {
+        public void Create_PDF_from_DOC(string DocFileName, string PDFFileName) {
 
-            //http://www.c-sharpcorner.com/article/word-automation-using-C-Sharp/
-            object misValue = System.Reflection.Missing.Value;
+            try
+            {            
 
-            Microsoft.Office.Interop.Word.Application objApp = new Microsoft.Office.Interop.Word.Application();
-            Microsoft.Office.Interop.Word.Document objDoc = new Microsoft.Office.Interop.Word.Document();
+                //http://www.c-sharpcorner.com/article/word-automation-using-C-Sharp/
+                object misValue = System.Reflection.Missing.Value;
 
-            objApp.Documents.Add(misValue, misValue, misValue, misValue);
+                Microsoft.Office.Interop.Word.Application objApp = new Microsoft.Office.Interop.Word.Application();
+                Microsoft.Office.Interop.Word.Document objDoc = new Microsoft.Office.Interop.Word.Document();
             
-            objApp.Visible = true;
+                objDoc = objApp.Documents.Open(DocFileName);
+                objDoc.ExportAsFixedFormat(PDFFileName, WdExportFormat.wdExportFormatPDF);
 
-            
-            if (objApp != null) { Marshal.ReleaseComObject(objApp); }
-            if (objDoc != null) { Marshal.ReleaseComObject(objDoc); }
+                objDoc.Close();
+                objApp.Quit();
+           
+                if (objDoc != null) { Marshal.ReleaseComObject(objDoc); }
+                if (objApp != null) { Marshal.ReleaseComObject(objApp); }
 
-            //http://stackoverflow.com/questions/8977571/excel-process-remains-open-after-interop-traditional-method-not-working
-            //These will close the excel object and force garbage collection.  Watch Task manager. Keep on eye on the Excel process.
-            objApp = null;
-            objDoc = null;
-            GC.Collect();
+                //http://stackoverflow.com/questions/8977571/excel-process-remains-open-after-interop-traditional-method-not-working
+                //These will close the excel object and force garbage collection.  Watch Task manager. Keep on eye on the Excel process.
+                objApp = null;
+                objDoc = null;
+                GC.Collect();
+
+            }
+            catch (Exception ex)
+            {
+
+                throw new System.ArgumentException(ex.Message.ToString());
+            }
 
 
         }
+
+
+        private void createMergedDoc()
+        {
+            try
+            {
+
+                
+
+
+            }
+            catch (Exception ex)
+            {
+                throw new System.ArgumentException(ex.Message.ToString());
+            }
+        }
+        
 
         private void btnWord_Click(object sender, EventArgs e)
         {
-            build_word_doc();
+            Cursor.Current = Cursors.WaitCursor;
+
+            string PDFFileName = @"c:\temp\ConvertThis";
+            string DOCFileName = @"c:\temp\ConvertThis.docx";
+
+            for (Int32 i = 0; i < 30; i++)
+            {                
+                Create_PDF_from_DOC(DOCFileName, PDFFileName + i + ".pdf");
+            }
+            
+            MessageBox.Show("Finished");
+            Cursor.Current = Cursors.Default;
+
         }
+        
+
+
     }
 }
