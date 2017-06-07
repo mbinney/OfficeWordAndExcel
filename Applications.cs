@@ -3,6 +3,7 @@ using System.Windows.Forms;
 using Microsoft.Office.Interop.Excel;
 using System.Runtime.InteropServices;
 using Microsoft.Office.Interop.Word;
+using System.Diagnostics;
 
 namespace Office
 {
@@ -116,10 +117,24 @@ namespace Office
 
                     objDoc = objApp.Documents.Open(DOCFileName);
 
-                    foreach (Microsoft.Office.Interop.Word.Fields myMergedFields in objDoc.Fields)
+                    foreach (Microsoft.Office.Interop.Word.Field myMergedFields in objDoc.Fields)
                     {
                         //Microsoft.Office.Interop.Word.Range  rngFieldCode = myMergedFields
+                        Microsoft.Office.Interop.Word.Range rngFieldCode = myMergedFields.Code;
+                        String fieldText = rngFieldCode.Text;
 
+                        Debug.Print(fieldText.ToString());                        
+
+                        if (fieldText.StartsWith(" MERGEFIELD"))
+                        {
+
+                            Int32 endMerge = fieldText.IndexOf("\\");
+                            Int32 fieldNameLength = fieldText.Length - endMerge;
+                            String fieldName = fieldText.Substring(11, endMerge - 11);
+                            fieldName = fieldName.Trim();
+                            Debug.Print(fieldName);
+
+                        }
 
                     }
 
