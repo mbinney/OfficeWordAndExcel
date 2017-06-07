@@ -100,12 +100,49 @@ namespace Office
         }
 
 
-        private void createMergedDoc()
+        private void createMergedDoc(string DOCFileName)
         {
             try
             {
 
-                
+                try
+                {
+
+                    //http://www.c-sharpcorner.com/article/word-automation-using-C-Sharp/
+                    object misValue = System.Reflection.Missing.Value;
+
+                    Microsoft.Office.Interop.Word.Application objApp = new Microsoft.Office.Interop.Word.Application();
+                    Microsoft.Office.Interop.Word.Document objDoc = new Microsoft.Office.Interop.Word.Document();
+
+                    objDoc = objApp.Documents.Open(DOCFileName);
+
+                    foreach (Microsoft.Office.Interop.Word.Fields myMergedFields in objDoc.Fields)
+                    {
+                        //Microsoft.Office.Interop.Word.Range  rngFieldCode = myMergedFields
+
+
+                    }
+
+                    objDoc.Close();
+                    objApp.Quit();
+
+                    if (objDoc != null) { Marshal.ReleaseComObject(objDoc); }
+                    if (objApp != null) { Marshal.ReleaseComObject(objApp); }
+
+                    //http://stackoverflow.com/questions/8977571/excel-process-remains-open-after-interop-traditional-method-not-working
+                    //These will close the excel object and force garbage collection.  Watch Task manager. Keep on eye on the Excel process.
+                    objApp = null;
+                    objDoc = null;
+                    GC.Collect();
+
+                }
+                catch (Exception ex)
+                {
+
+                    throw new System.ArgumentException(ex.Message.ToString());
+                }
+
+
 
 
             }
@@ -120,8 +157,8 @@ namespace Office
         {
             Cursor.Current = Cursors.WaitCursor;
 
-            string PDFFileName = @"c:\temp\ConvertThis";
-            string DOCFileName = @"c:\temp\ConvertThis.docx";
+            string PDFFileName = @"c:\temp\32321";
+            string DOCFileName = @"c:\temp\32321.doc";
 
             for (Int32 i = 0; i < 30; i++)
             {                
@@ -132,8 +169,11 @@ namespace Office
             Cursor.Current = Cursors.Default;
 
         }
-        
 
-
+        private void btnMerge_Click(object sender, EventArgs e)
+        {
+            string DOCFileName = @"c:\temp\MailMergeDemo.docx";            
+            createMergedDoc(DOCFileName);
+        }
     }
 }

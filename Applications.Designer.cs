@@ -30,6 +30,7 @@
         {
             this.btnExcel = new System.Windows.Forms.Button();
             this.btnWord = new System.Windows.Forms.Button();
+            this.btnMerge = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // btnExcel
@@ -52,11 +53,22 @@
             this.btnWord.UseVisualStyleBackColor = true;
             this.btnWord.Click += new System.EventHandler(this.btnWord_Click);
             // 
+            // btnMerge
+            // 
+            this.btnMerge.Location = new System.Drawing.Point(189, 13);
+            this.btnMerge.Name = "btnMerge";
+            this.btnMerge.Size = new System.Drawing.Size(84, 30);
+            this.btnMerge.TabIndex = 2;
+            this.btnMerge.Text = "Merge Doc";
+            this.btnMerge.UseVisualStyleBackColor = true;
+            this.btnMerge.Click += new System.EventHandler(this.btnMerge_Click);
+            // 
             // Applications
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(203, 58);
+            this.ClientSize = new System.Drawing.Size(297, 52);
+            this.Controls.Add(this.btnMerge);
             this.Controls.Add(this.btnWord);
             this.Controls.Add(this.btnExcel);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
@@ -73,6 +85,7 @@
 
         private System.Windows.Forms.Button btnExcel;
         private System.Windows.Forms.Button btnWord;
+        private System.Windows.Forms.Button btnMerge;
     }
 }
 
