@@ -102,11 +102,8 @@ namespace Office
 
 
         private void createMergedDoc(string DOCFileName)
-        {
+        { 
             try
-            {
-
-                try
                 {
 
                     //http://www.c-sharpcorner.com/article/word-automation-using-C-Sharp/
@@ -127,13 +124,18 @@ namespace Office
 
                         if (fieldText.StartsWith(" MERGEFIELD"))
                         {
-
                             Int32 endMerge = fieldText.IndexOf("\\");
                             Int32 fieldNameLength = fieldText.Length - endMerge;
                             String fieldName = fieldText.Substring(11, endMerge - 11);
                             fieldName = fieldName.Trim();
-                            Debug.Print(fieldName);
 
+                            if (fieldName == "Title")
+                            {
+                                myMergedFields.Select();                                
+                                objApp.Selection.TypeText("Hello World");
+                            }
+
+                        Debug.Print(fieldName);
                         }
 
                     }
@@ -156,16 +158,7 @@ namespace Office
 
                     throw new System.ArgumentException(ex.Message.ToString());
                 }
-
-
-
-
-            }
-            catch (Exception ex)
-            {
-                throw new System.ArgumentException(ex.Message.ToString());
-            }
-        }
+            }       
         
 
         private void btnWord_Click(object sender, EventArgs e)
